@@ -6,54 +6,56 @@
 
     <div class="desktop">
       <div class="app" @click="open('aSearch')">
-        <img src="/icon/Search.png" />
+        <img src="@/assets/icon/Search.png" />
         <span>Search</span>
       </div>
-      <a class="app"  >
-        <img src="/icon/Meta.png" />
+      <a class="app" @click="connectWallet">
+        <img src="@/assets/icon/Meta.png" />
         <span>Wallet</span>
       </a>
-      <a class="app"  >
-        <img src="/icon/Covid.png" />
+      <a class="app">
+        <img src="@/assets/icon/Covid.png" />
         <span>Covid</span>
       </a>
-      <a class="app"  >
-        <img src="/icon/Docs.png" />
+      <a class="app">
+        <img src="@/assets/icon/Docs.png" />
         <span>Docs</span>
       </a>
-      <a class="app"  href='mailto:hello@asearch.io'>
-        <img src="/icon/Mail.png" />
+      <a class="app" href="mailto:hello@asearch.io">
+        <img src="@/assets/icon/Mail.png" />
         <span>Mail-us</span>
       </a>
-      <a class="app"  href='https://github.com/AR-HACKSON/' target='_blank'  >
-        <img src="/icon/Github.png" />
+      <a class="app" href="https://github.com/asearch-AR" target="_blank">
+        <img src="@/assets/icon/Github.png" />
         <span>Github</span>
       </a>
-      <a class="app" href='https://medium.com/@kristiancy/web3-search-engine-in-the-future-5b5ad48e55d1' target='_blank' >
-        <img src="/icon/Medium.png" />
+      <a
+        class="app"
+        href="https://medium.com/@kristiancy/web3-search-engine-in-the-future-5b5ad48e55d1"
+        target="_blank"
+      >
+        <img src="@/assets/icon/Medium.png" />
         <span>Medium</span>
       </a>
-      <a class="app" href='https://twitter.com/Asearch_io' target='_blank' >
-        <img src="/icon/Twitter.png" />
+      <a class="app" href="https://twitter.com/Asearch_io" target="_blank">
+        <img src="@/assets/icon/Twitter.png" />
         <span>Twitter</span>
       </a>
-      <a class="app" href='https://discord.com' target='_blank' >
-        <img src="/icon/Dis.png" />
+      <a class="app" href="https://discord.com" target="_blank">
+        <img src="@/assets/icon/Dis.png" />
         <span>Discord</span>
       </a>
 
-
-
-<!--      <a-->
-<!--        v-for="item in links"-->
-<!--        :key="item.name"-->
-<!--        class="app"-->
-<!--        :href="item.url"-->
-<!--        target="_blank"-->
-<!--      >-->
-<!--        <img src="" />-->
-<!--        <span>{{ item.name }}</span>-->
-<!--      </a>-->
+      <!--      <a-->
+      <!--        v-for="item in links"-->
+      <!--        :key="item.name"-->
+      <!--        class="app"-->
+      <!--        :href="item.url"-->
+      <!--        target="_blank"-->
+      <!--      >-->
+      <!--        <img src="" />-->
+      <!--        <span>{{ item.name }}</span>-->
+      <!--      </a>-->
 
       <!-- BACKGROUND -->
       <img class="logo" src="@/assets/textlogo.png" />
@@ -61,7 +63,7 @@
 
     <div class="as-taskbar">
       <div class="start" @click="starting = true">
-        <img src="/logo.png" />
+        <img src="@/assets/logo.png" />
       </div>
       <div class="minimized">
         <span v-for="(item, i) in minimized" :key="i" @click="reopen(item)">
@@ -81,10 +83,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from '@vue/runtime-core'
 import Window from '@/components/Window.vue'
 import StartingUp from '@/components/StartingUp.vue'
 
-
+const address = ref('')
+const isMetamaskSupported = ref(false)
+onMounted(() => {
+  isMetamaskSupported.value = typeof (window as any).ethereum !== 'undefined'
+})
 
 export default defineComponent({
   name: 'App',
@@ -120,6 +127,16 @@ export default defineComponent({
     minimize() {
       this.show = false
       this.minimized.push('aSearch')
+    },
+    async connectWallet() {
+      if (!isMetamaskSupported) {
+        alert('Please install Metamask extension.')
+      } else {
+        const accounts = await (window as any).ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        address.value = accounts[0]
+      }
     },
   },
 })

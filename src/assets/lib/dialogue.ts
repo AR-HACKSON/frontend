@@ -17,7 +17,7 @@ export const welcome: Command = (args, logs) => {
   logs.push(
     '<span class="b">Welcome to aSearch!</span>' + (name ? ` ${name}` : ''),
     '  ',
-    'inpute <span class="b">search anything </span>to search anything in Mirror',
+    'input <span class="b">search anything </span> to search on Mirror',
     '┌────────────────────────────────────────────────────────────────────────────────┐',
     '│aSearch.io ><span class="y">search </span>Arweave                                                      │',
     '│1. <span class="b">The Golden Permaweb: Arweave</span>                                                 │',
