@@ -9,7 +9,7 @@
         <img src="/icon/Search.png" />
         <span>Search</span>
       </div>
-      <a class="app"  >
+      <a class="app" @click="connectWallet">
         <img src="/icon/Meta.png" />
         <span>Wallet</span>
       </a>
@@ -81,10 +81,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from '@vue/runtime-core'
 import Window from '@/components/Window.vue'
 import StartingUp from '@/components/StartingUp.vue'
 
-
+const address = ref('')
+const isMetamaskSupported = ref(false)
+onMounted(() => {
+  isMetamaskSupported.value = typeof (window as any).ethereum !== 'undefined'
+})
 
 export default defineComponent({
   name: 'App',
@@ -120,6 +125,16 @@ export default defineComponent({
     minimize() {
       this.show = false
       this.minimized.push('aSearch')
+    },
+    async connectWallet() {
+      if (!isMetamaskSupported) {
+        alert('Please install Metamask extension.')
+      } else {
+        const accounts = await (window as any).ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        address.value = accounts[0]
+      }
     },
   },
 })
