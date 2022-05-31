@@ -21,7 +21,7 @@
         <img src="@/assets/icon/Docs.png" />
         <span>Docs</span>
       </a>
-      <a class="app" href="mailto:hello@asearch.io">
+      <a class="app" href="mailto:team@asearch.io">
         <img src="@/assets/icon/Mail.png" />
         <span>Mail-us</span>
       </a>
